@@ -48,7 +48,6 @@ fun GameScreen(onGameOver: (score: Int) -> Unit) {
             delay(16L)
             score += 1
 
-            // Обновление препятствий
             obstacles.replaceAll {
                 Rect(
                     offset = Offset(it.left - 10f, it.top),
@@ -56,10 +55,8 @@ fun GameScreen(onGameOver: (score: Int) -> Unit) {
                 )
             }
 
-            // Удаляем вышедшие за экран
             obstacles.removeAll { it.right < 0 }
 
-            // Проверка на столкновение
             val playerRect = Rect(
                 offset = Offset(playerX, playerY.value),
                 size = Size(playerWidth, playerHeight)
@@ -69,7 +66,6 @@ fun GameScreen(onGameOver: (score: Int) -> Unit) {
                 onGameOver(score)
             }
 
-            // Генерация новых препятствий
             if (Random.nextFloat() < 0.02f) {
                 obstacles.add(
                     Rect(
@@ -87,14 +83,12 @@ fun GameScreen(onGameOver: (score: Int) -> Unit) {
             .background(Color.Black)
     ) {
         Canvas(modifier = Modifier.fillMaxSize()) {
-            // Игрок
             drawRect(
                 color = Color.Green,
                 topLeft = Offset(playerX, playerY.value),
                 size = Size(playerWidth, playerHeight)
             )
 
-            // Препятствия
             obstacles.forEach {
                 drawRect(
                     color = Color.Red,
@@ -103,12 +97,11 @@ fun GameScreen(onGameOver: (score: Int) -> Unit) {
                 )
             }
 
-            // Очки
             drawIntoCanvas {
                 it.nativeCanvas.drawText(
                     "Score: $score",
                     50f,
-                    statusBarHeightPx + 80f, // чуть ниже статус-бара
+                    statusBarHeightPx + 80f,
                     android.graphics.Paint().apply {
                         color = android.graphics.Color.WHITE
                         textSize = 60f
@@ -118,7 +111,6 @@ fun GameScreen(onGameOver: (score: Int) -> Unit) {
 
         }
 
-        // Прыжок по клику
         Box(
             modifier = Modifier
                 .matchParentSize()
